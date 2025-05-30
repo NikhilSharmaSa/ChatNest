@@ -7,7 +7,7 @@ function UserSideBar() {
     return (
         <div className='min-w-[18em] bg-base-300 max-h-screen flex flex-col'>
             <div className='text-center p-2 text-2xl font-bold'>
-                <h1>Chat Application</h1>
+                <h1>Chat Nest</h1>
             </div>
 
             <div className='p-3'>
