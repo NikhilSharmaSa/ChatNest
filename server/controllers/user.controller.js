@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 
 import User from '../models/user.model.js'
-import bcrypt from 'bcrypt'
+import bcrypt, { compare } from 'bcrypt'
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 const userRegister=asyncHandler(async(req,res)=>{
@@ -35,7 +35,19 @@ if(!newUser) throw new ApiError(401,"User not Created")
 })
 
 
-const userLogin =asyncHandler((req,res)=>{
+const userLogin =asyncHandler(async(req,res)=>{
+const {username,password}=req.body
+
+if(!(username && password)) throw new ApiError(401,"Please Enter a valid Username & Password!!")
+
+const user=await User.findOne({username})
+if(!user) throw new ApiError(401,"User not Registered!!")
+
+    const comparePassword= await bcrypt.compare(password,user.password)
+    if(!comparePassword) throw new ApiError(401,"Wrong Password!!")
+
+
+
     res.send("User Login Successfully!!")
 })
 
