@@ -5,16 +5,26 @@ import bcrypt from 'bcrypt'
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 const userRegister=asyncHandler(async(req,res)=>{
-    
-const encryptedPassword=await bcrypt.hash("9675486612",10)
+
+    const {username,fullname,email,password,gender}=req.body
+    if(!(username|| fullname || email ||password||gender )) throw new ApiError(401,"All Fields Are Mendatory!!")
+const oldUser = await User.findOne({
+      $or: [{ email: email }, { username: username }]
+    });
+    if(oldUser) throw new ApiError(401,"User Already Registered!!")
+const encryptedPassword=await bcrypt.hash(password,10)
+const avatarType=gender==="male"?"boy":"girl"
+const avatar=`https://avatar.iran.liara.run/public/girl?username=${username}`
+
+
 
 const newUser=await User.create({
-    username:"Nikhil@1235",
-    fullname:"Nikhil Sharma",
-    email:"nikhil.pandit.901@gmail.com1",
+    username:username,
+    fullname:fullname,
+    email:email,
     password:encryptedPassword,
-    gender:"Male",
-    avatar:"null"
+    gender:gender,
+    avatar:avatar
 
 })
 
