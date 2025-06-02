@@ -1,5 +1,4 @@
 import asyncHandler from "../utils/asyncHandler.js";
-
 import User from '../models/user.model.js'
 import bcrypt, { compare } from 'bcrypt'
 import ApiError from "../utils/apiError.js";
@@ -34,7 +33,6 @@ if(!newUser) throw new ApiError(401,"User not Created")
     res.status(201).json(new ApiResponse(201,newUser,"User Created Successfully!!"))
 })
 
-
 const userLogin =asyncHandler(async(req,res)=>{
 const {username,password}=req.body
 
@@ -50,5 +48,8 @@ if(!user) throw new ApiError(401,"User not Registered!!")
 
     res.send("User Login Successfully!!")
 })
+
+
+
 
 export{userLogin,userRegister}
