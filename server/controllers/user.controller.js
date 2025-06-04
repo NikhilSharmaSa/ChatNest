@@ -61,8 +61,8 @@ user.accesstoken=accessToken;
 user.refreshtoken=refreshToken;
 await user.save()
     res.status(201)
-    .cookie('accessToken',{accessToken,options})
-    .cookie('refreshToken',{refreshToken,options})
+    .cookie('accessToken',accessToken,options)
+    .cookie('refreshToken',refreshToken,options)
     .json(new ApiResponse(201,{},"User Login Successfully!!"))
 })
 
@@ -75,9 +75,18 @@ const profile=await User.findById(id).select('-password')
 res.status(201).json(new ApiResponse(201,profile,"User Profile Fetch Successfully!!"))
 })
 
-const logout=asyncHandler(async(req,res)=>{
-    
+const userLogout=asyncHandler(async(req,res)=>{
+    const options1={
+        httpOnly:true,
+   secure:process.env.NODE_ENV==="production",
+ 
+   sameSite:'none'
+    }
+    res.status(201)
+    .cookie('accessToken',"",options1)
+    .cookie('refreshToken',"",options1)
+    .json(new ApiResponse(201,{},"User Logout Successfully!!"))
 })
 
 
-export{userLogin,userRegister,getProfile}
+export{userLogin,userRegister,getProfile,userLogout}

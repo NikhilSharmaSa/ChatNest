@@ -4,7 +4,7 @@ import ApiError from '../utils/apiError.js'
 
 
 const verifyJWT=asyncHandler(async(req,res,next)=>{
-    const accessToken=req.cookies.accessToken.accessToken
+    const accessToken=req.cookies.accessToken
   
 if (!accessToken) throw new ApiError(401,"Inva;id Access Token")
 
