@@ -56,7 +56,7 @@ const options={
    sameSite:'none'
 }
 const accessToken=jwt.sign(userData,process.env.ACCESS_TOKEN,{expiresIn:process.env.ACCESS_EXPIRE})
-const refreshToken=jwt.sign(userData,process.env.ACCESS_TOKEN,{expiresIn:process.env.REFRESH_EXPIRE})
+const refreshToken=jwt.sign(userData,process.env.REFRESH_TOKEN,{expiresIn:process.env.REFRESH_EXPIRE})
 user.accesstoken=accessToken;
 user.refreshtoken=refreshToken;
 await user.save()
@@ -66,7 +66,18 @@ await user.save()
     .json(new ApiResponse(201,{},"User Login Successfully!!"))
 })
 
+const getProfile=asyncHandler(async(req,res)=>{
+console.log(req.user._id)
+const id=req.user._id
+
+const profile=await User.findById(id).select('-password')
+
+res.status(201).json(new ApiResponse(201,profile,"User Profile Fetch Successfully!!"))
+})
+
+const logout=asyncHandler(async(req,res)=>{
+    
+})
 
 
-
-export{userLogin,userRegister}
+export{userLogin,userRegister,getProfile}
