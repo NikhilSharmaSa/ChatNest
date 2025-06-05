@@ -3,8 +3,8 @@ import User from "../models/user.model.js"
 import ApiError from "../utils/apiError.js"
 import asyncHandler from "../utils/asyncHandler.js"
 import CryptoJS from "crypto-js"
-
-
+import Conversation from "../models/conversation.model.js"
+import ApiResponse from "../utils/apiResponse.js"
 
 
 //function for encryption 
@@ -51,6 +51,22 @@ if(!msg) throw new ApiError(401,"Please Enter a Valid Message!!")
     const encryptedMessage=await encryptMessage(msg)
 
 
+
+
+let conversation =await Conversation.findOne({
+   participants: { $all: [senderID, recieverID] },
+    $expr: { $eq: [{ $size: "$participants" }, 2] }
+})
+
+
+if (!conversation){
+  conversation=await Conversation.create({
+    participants:[senderID,recieverID]
+  })
+}
+
+
+
     const newmessage=await Message.create({
         from:senderID,
         to:recieverID,
@@ -58,7 +74,14 @@ if(!msg) throw new ApiError(401,"Please Enter a Valid Message!!")
 
     })
 
+    if(newmessage){
+       conversation.messages.push(newmessage?._id)
+      await conversation.save()
+    }
 
+
+
+    res.status(201).json(new ApiResponse(201,newmessage,"Message Send Successfully!!"))
 
 })
 

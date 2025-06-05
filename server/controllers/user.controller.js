@@ -89,4 +89,14 @@ const userLogout=asyncHandler(async(req,res)=>{
 })
 
 
-export{userLogin,userRegister,getProfile,userLogout}
+const getAllUsers=asyncHandler(async(req,res)=>{
+
+
+    const allUsers=await User.find().select("-password")
+
+
+
+    res.status(201).json(new ApiResponse(201,allUsers,"All Users Fetch Successfully!!"))
+})
+
+export{userLogin,userRegister,getProfile,userLogout,getAllUsers}
