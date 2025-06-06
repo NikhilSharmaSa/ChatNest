@@ -25,7 +25,7 @@ const encryptMessage= async(message)=> {
 function decryptMessage(encryptedString) {
   try {
   
-    const bytes = CryptoJS.AES.decrypt(encryptedString, PASSPHRASE);
+    const bytes = CryptoJS.AES.decrypt(encryptedString, process.env.PREPARSE);
 
 
     const decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
@@ -86,10 +86,28 @@ if (!conversation){
 })
 
 
-const recieveMessage=asyncHandler(async(req,res)=>{
+const getMessages=asyncHandler(async(req,res)=>{
+
+
+  const senderID=req.user?._id
+  const {recieverID}=req.body
+
+
+let conversation =await Conversation.findOne({
+   participants: { $all: [senderID, recieverID] },
+   $expr: { $eq: [{ $size: "$participants" }, 2] }
+}).populate("messages")
+
+
+
+ 
+
+
+
+res.status(201).json(new ApiResponse(201,conversation,"All msgs Fetch Successfully!!"))
 
 })
 
 
 
-export {sendMessage,recieveMessage}
+export {sendMessage,getMessages}
