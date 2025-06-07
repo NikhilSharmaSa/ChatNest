@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import {FaUser,FaEye} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import {toast} from "react-hot-toast"
+import { useDispatch } from 'react-redux'
+import { loginThunk } from '../../store/slices/user/user.thunk.js'
 function Login() {
 
+    const dispatch=useDispatch()
 const [loginData,setLoginData]=useState({
     username:"",
     password:""
@@ -10,13 +14,24 @@ const [loginData,setLoginData]=useState({
 
 
 const handleInputChange=(e)=>{
-console.log(e.target.name+" "+e.target.value)
     setLoginData({
         ...loginData,
         [e.target.name]:e.target.value
     })
 }
 
+
+const handleLogin=async()=>{
+try {
+
+ dispatch(loginThunk(loginData))
+
+        
+} catch (error) {
+    console.log(error)
+}
+
+}
 
 
     return (
@@ -36,7 +51,7 @@ console.log(e.target.name+" "+e.target.value)
  <FaEye/>
   <input type="password"  name='password' className="grow" placeholder='Password' autoComplete='new-password' onChange={handleInputChange} />
 </label>
-<button className="btn btn-primary w-full ">Login</button>
+<button className="btn btn-primary w-full " onClick={handleLogin}>Login</button>
 <p>Don't have an account &nbsp;<Link to="/signup" className='text-lg text-blue-400'>SignUp</Link></p>
 </div>
 </div>
