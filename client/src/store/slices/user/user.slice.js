@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk } from "./user.thunk.js";
+import { loginThunk, registerThunk } from "./user.thunk.js";
 
 
 
@@ -12,6 +12,7 @@ const userSlice=createSlice({
 
     },
     extraReducers: (builder) => {
+      //Login User
         builder.addCase(loginThunk.pending, (state, action) => {
            console.log("pending")
           })
@@ -21,6 +22,18 @@ const userSlice=createSlice({
         builder.addCase(loginThunk.rejected, (state, action) => {
         console.log("Rejected")
         })
+
+        // Register User
+         builder.addCase(registerThunk.pending, (state, action) => {
+           console.log("pending")
+          })
+          builder.addCase(registerThunk.fulfilled, (state, action) => {
+            console.log("fulfilled")
+          })
+        builder.addCase(registerThunk.rejected, (state, action) => {
+        console.log("Rejected")
+        })
+
       },
 })
 

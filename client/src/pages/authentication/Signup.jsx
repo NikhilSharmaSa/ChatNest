@@ -1,15 +1,21 @@
 import React from 'react'
-import {FaUser,FaEye} from 'react-icons/fa'
+import {FaUser,FaEye, FaEnvelope} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-
+import { useDispatch } from 'react-redux'
+import { registerThunk } from '../../store/slices/user/user.thunk.js'
 function Signup() {
 
+
+    const dispatch=useDispatch()
 const [signupData,setSignupData]=useState({
     fullname:"",
     username:"",
+     email:"",
     password:"",
-    confirmPassword:""
+   
+    confirmPassword:"",
+    gender:""
 })
 
 
@@ -22,6 +28,11 @@ console.log(e.target.name+" "+e.target.value)
 }
 
 
+
+const handleRegister=async()=>{
+dispatch(registerThunk(signupData))
+
+}
 
     return (
         <>
@@ -42,6 +53,23 @@ console.log(e.target.name+" "+e.target.value)
   <input type="text" className="grow" placeholder="Username" autoComplete='new-username' onChange={handleInputChange}  name='username' />
 </label>
 <label className="input input-bordered flex items-center gap-2 w-full">
+ <FaEnvelope/>
+  <input type="email" className="grow" placeholder="Email" autoComplete='Email' onChange={handleInputChange}  name='email' />
+</label>
+<div className="flex w-full justify-around">
+<h3>Gender</h3>
+  <label className="label">
+    <input type="radio" name="gender" onChange={handleInputChange}  value="male"  />
+    Male
+  </label>
+
+  <label className="label">
+    <input type="radio" name="gender" onChange={handleInputChange}  value="female" />
+    Female
+  </label>
+      
+</div>
+<label className="input input-bordered flex items-center gap-2 w-full">
  <FaEye/>
   <input type="password" className="grow" placeholder='Password'  autoComplete='new-password' onChange={handleInputChange} name='password'/>
 </label>
@@ -49,7 +77,7 @@ console.log(e.target.name+" "+e.target.value)
  <FaEye/>
   <input type="password" className="grow" placeholder='Confirm Password' onChange={handleInputChange} name='confirmPassword' />
 </label>
-<button className="btn btn-primary w-full ">Signup</button>
+<button className="btn btn-primary w-full" onClick={handleRegister}>Signup</button>
 <p>Already have an account &nbsp;<Link to="../login" className='text-lg text-blue-400'>Login</Link></p>
 </div>
 </div>
