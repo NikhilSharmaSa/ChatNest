@@ -6,8 +6,10 @@ import ApiResponse from "../utils/apiResponse.js";
 import jwt from 'jsonwebtoken'
 const userRegister=asyncHandler(async(req,res)=>{
 
-    const {username,fullname,email,password,gender}=req.body
-    if(!(username|| fullname || email ||password||gender )) throw new ApiError(401,"All Fields Are Mendatory!!")
+    const {username,fullname,password,gender,email,confirmPassword}=req.body
+    console.log(req.body)
+    if(!(username && fullname && email && password && gender )) throw new ApiError(401,"All Fields Are Mendatory!!")
+if(password!=confirmPassword) throw new ApiError(401,"Passwords are Not Matched!!")
 const oldUser = await User.findOne({
       $or: [{ email: email }, { username: username }]
     });
@@ -51,7 +53,7 @@ const userData={
 
 const options={
     httpOnly:true,
-   secure:process.env.NODE_ENV==="production",
+   secure:true,
    expires: new Date(Date.now() + 3600000),
    sameSite:'none'
 }
@@ -78,7 +80,7 @@ res.status(201).json(new ApiResponse(201,profile,"User Profile Fetch Successfull
 const userLogout=asyncHandler(async(req,res)=>{
     const options1={
         httpOnly:true,
-   secure:process.env.NODE_ENV==="production",
+   secure:true,
  
    sameSite:'none'
     }
