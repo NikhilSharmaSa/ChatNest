@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { registerThunk } from '../../store/slices/user/user.thunk.js'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 function Signup() {
-
+const navigate=useNavigate()
 
     const dispatch=useDispatch()
 const [signupData,setSignupData]=useState({
@@ -30,7 +32,18 @@ console.log(e.target.name+" "+e.target.value)
 
 
 const handleRegister=async()=>{
-dispatch(registerThunk(signupData))
+  if(signupData.password!=signupData.confirmPassword){
+    return toast.error("Password and Confirm Password do not Match!!")
+  }
+try {
+const response= await  dispatch(registerThunk(signupData))
+console.log(response.payload)
+if(response.payload?.success){
+navigate('/')
+}
+} catch (error) {
+  
+}
 
 }
 

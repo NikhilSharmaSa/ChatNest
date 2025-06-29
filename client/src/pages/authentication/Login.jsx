@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import {FaUser,FaEye} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import {toast} from "react-hot-toast"
 import { useDispatch } from 'react-redux'
 import { loginThunk } from '../../store/slices/user/user.thunk.js'
+import { useNavigate } from 'react-router-dom'
 function Login() {
-
+const navigate=useNavigate()
     const dispatch=useDispatch()
 const [loginData,setLoginData]=useState({
     username:"",
@@ -24,9 +24,11 @@ const handleInputChange=(e)=>{
 const handleLogin=async()=>{
 try {
 
- dispatch(loginThunk(loginData))
-
-        
+const response=await  dispatch(loginThunk(loginData))
+console.log(response.payload)
+if(response.payload?.success){
+navigate('/')
+}
 } catch (error) {
     console.log(error)
 }

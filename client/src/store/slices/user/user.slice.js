@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk } from "./user.thunk.js";
+import { fetchProfileThunk, fetchUserThunk, loginThunk, logoutThunk, registerThunk } from "./user.thunk.js";
 
 
 
@@ -34,6 +34,40 @@ const userSlice=createSlice({
         console.log("Rejected")
         })
 
+
+        // fetch User
+         builder.addCase(fetchUserThunk.pending, (state, action) => {
+           console.log("pending")
+          })
+          builder.addCase(fetchUserThunk.fulfilled, (state, action) => {
+            console.log("fulfilled")
+          })
+        builder.addCase(fetchUserThunk.rejected, (state, action) => {
+        console.log("Rejected")
+        })
+
+
+         // logout User
+         builder.addCase(logoutThunk.pending, (state, action) => {
+           console.log("pending")
+          })
+          builder.addCase(logoutThunk.fulfilled, (state, action) => {
+            console.log("fulfilled")
+          })
+        builder.addCase(logoutThunk.rejected, (state, action) => {
+        console.log("Rejected")
+        })
+
+        // fetch User
+         builder.addCase(fetchProfileThunk.pending, (state, action) => {
+           console.log("pending")
+          })
+          builder.addCase(fetchProfileThunk.fulfilled, (state, action) => {
+            console.log("fulfilled")
+          })
+        builder.addCase(fetchProfileThunk.rejected, (state, action) => {
+        console.log("Rejected")
+        })
       },
 })
 

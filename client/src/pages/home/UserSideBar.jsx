@@ -3,25 +3,37 @@ import { FaSearch } from 'react-icons/fa';
 import User from './User';
 import Profile from './profile';
 import { useEffect } from 'react';
-import axios from "axios"
 import { useState } from 'react';
-
-
+import {fetchUserThunk,fetchProfileThunk} from '../../store/slices/user/user.thunk.js'
+import { useDispatch } from 'react-redux';
 
 function UserSideBar() {
-
+const dispatch=useDispatch()
 const [users,setUsers]=useState([])
-
+const [name,setName]=useState()
+const [username,setUserName]=useState()
+const [img,setImg]=useState()
 
 
 
     const getUsers=async()=>{
-   const users= await  axios.get(`/api/v1/user/getAllUsers`,{withCredentials:true})
-console.log(users.data.data)
-setUsers(users.data.data)
+       
+ const response=await  dispatch(fetchUserThunk())
+ 
+setUsers(response.payload.data)
+    }
+
+
+    const getProfile=async()=>{
+        const response=await dispatch(fetchProfileThunk())
+        console.log(response)
+       setImg(response.payload.data.avatar)
+       setUserName(response.payload.data.username)
+       setName(response.payload.data.fullname)
     }
 useEffect(()=>{
  getUsers()
+ getProfile()
 },[])
 
     return (
@@ -40,13 +52,13 @@ useEffect(()=>{
             <div className='flex-1 overflow-auto px-4'>
                {
                 users.map((user)=>(
-<User user={user}/>
+<User user={user} key={user.username}/>
                 ))
                }
             </div>
 
             <div className='bg-black'>
-                <Profile />
+                <Profile name={name} img={img} username={username} />
             </div>
         </div>
     );

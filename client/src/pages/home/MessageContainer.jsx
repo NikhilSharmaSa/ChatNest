@@ -14,7 +14,7 @@ function MessageContainer() {
         </div>
         <div className='w-full bg-base-300 p-4 min-h-[3em] flex gap-4'>
             <InputBox/>
-<button class="btn btn-primary">Send</button>
+<button className="btn btn-primary">Send</button>
         </div>
        </div>
     )

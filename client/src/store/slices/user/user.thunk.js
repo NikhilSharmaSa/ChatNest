@@ -33,3 +33,41 @@ export const registerThunk = createAsyncThunk("user/registerThunk", async ({user
 return rejectWithValue("User Not Register!!")
  }
 });
+
+
+
+ export const fetchUserThunk = createAsyncThunk("user/fetchUserThunk",async()=>{
+try {
+  
+  const response=await axiosInstance.get('/user/getAllUsers')
+  
+  return response.data
+} catch (error) {
+  console.log("error:::::::::::::"+error.response.data.message)
+  toast.error(error.response.data.message)
+  rejectWithValue("Unable to fetch Users!!")
+}
+})
+
+export const logoutThunk=createAsyncThunk('user/logoutThunk',async()=>{
+  try {
+    const response= await axiosInstance.get('user/logout')
+    toast.success("logout SuccessFully!!")
+    return response.data
+  } catch (error) {
+    console.log("error:::::::::::::"+error.response.data.message)
+  toast.error(error.response.data.message)
+  }
+})
+
+
+export const fetchProfileThunk=createAsyncThunk('user/fetchProfileThunk',async()=>{
+  try {
+    const response= await axiosInstance.get('user/getProfile')
+   
+    return response.data
+  } catch (error) {
+    console.log("error:::::::::::::"+error.response.data.message)
+
+  }
+})
